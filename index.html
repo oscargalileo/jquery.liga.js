@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Ejemplos de LIGA.js</title>
+    <link rel="shortcut icon" href="img/liga.ico">
+    <link rel="icon" type="image/gif" href="img/liga.gif">
+    <link href="css/LIGA.css" rel="stylesheet" media="all" />
+    <link href="css/jquery-ui/liga/jquery-ui-1.9.2.liga.min.css" rel="stylesheet" media="all" />
+    <style>
+      html {
+       background-color:#dfdfdf;
+      }
+      pre {
+       font-family:monospace;
+       background-color:#c4c4c4;
+       font-size:15px;
+       border-radius:5px;
+       padding:5px;
+      }
+      .flotante {
+       position:fixed;
+       right:10px;
+       top:10px
+      }
+      label {
+       width:120px;
+      }
+      fieldset {
+       width: 40%;
+       min-width:260px;
+      }
+    </style>
+</head>
+<body>
+    <div class="flotante">
+        Contenedor flotante
+    </div>
+    <h1><img src="img/LIGA.png" alt="Proyecto LIGA" /></h1>
+    <p>El proyecto LIGA presenta <strong>jquery.liga.js</strong>, no sólo es un Plugin para <strong>JQuery</strong>, es toda una <em>suite</em> de funcionalidades que mejoran la expediencia del usuario en una aplicación web.</p>
+    <p>Posee compatibilidad con los temas de JQuery UI, basta con cargar su hoja de estilos para obtener su diseño con <strong>jquery.liga.js</strong></p>
+    <p>En caso de cargar la función <em>Draggable</em> de <strong>JQuery UI</strong> podrá mover las ventanas de alerta y preguntas, siendo totalmente opcional su uso.</p>
+    <p>A continuación una demostración de sus funciones:</p>
+    
+    <pre class="ui-widget-content">
+    <button class="btn1" onclick="$('body').liga('mensaje', 'Mensaje de pruebas con jquery.liga.js')">Mensaje (en body)</button>
+        $('body').liga('mensaje', 'Mensaje de pruebas con jquery.liga.js');
+        
+    <button class="btn2" onclick="$('.flotante').liga('mensaje', {msj:'Mensaje alterno con class personalizado y colocado en un contenedor distinto a <em>body</em>, puede tener HTML: <img src=\'img/LIGA.png\' />','class':'msj2'})">Mensaje (en contenedor flotante a la derecha)</button>    
+        $('.flotante').liga('mensaje',  {msj:'Mensaje alterno con class personalizado 
+        y colocado en un contenedor distinto a &lt;em>body&lt;/em>, puede tener HTML: &lt;img src="img/LIGA.png" />', 'class':'msj2'} );</pre>
+
+    <pre class="ui-widget-content">
+    <button class="btn1" onclick="$.liga('alerta', {msj:'Ventana de alerta personalizable, acepta HTML: <pre>Código  fuente...</pre> <img src=\'img/LIGAG.png\' />', tit:'Con título'})">Ventana de Alerta</button>
+        $.liga('alerta',  {msj:'Ventana de alerta personalizable, acepta HTML: &lt;pre&gt;Código  fuente...&lt;/pre&gt; &lt;img src="img/LIGAG.png" /&gt;',
+                           tit:'Con título'} );
+                           
+    <button class="btn2" onclick="$.liga('pregunta', {msj:'¿Le gusta LIGA.js?',funcS:function() {$.liga('alerta', '¡Muchas gracias!')}, funcN:function() {$.liga('alerta', ':,(')}} )">Ventana de Pregunta (confirmación)</button>    
+        $.liga('pregunta', {msj:'¿Le gusta LIGA.js?',
+                            funcS:function() {
+                             $.liga('alerta', '¡Muchas gracias!')
+                            },
+                            funcN:function() {
+                             $.liga('alerta', ':,(')
+                            }
+                           } );</pre>
+    
+    <pre class="ui-widget-content">
+    <button class="btn1" onclick="$.liga('memoria', 'llave', 'valor')" title="En memoria local o cookie según el navegador">Guardar valor</button>
+        $.liga('memoria', 'llave', 'valor');
+    
+    <button class="btn1" onclick="$.liga('alerta', {msj:$.liga('memoria', 'llave'), tit:'La llave contiene:'} )" title="Muestra el contenido de llave en una alerta">Mostrar valor</button>    
+        var dato = $.liga('memoria', 'llave');
+        $.liga('alerta', {msj: dato, tit: 'La llave contiene'} );
+    
+    <button class="btn2" onclick="$.liga('memoria', 'llave', null)">Borrar valor</button>    
+        $.liga('memoria', 'llave', null);</pre>
+    
+    <pre class="ui-widget-content">
+    <button class="btn1" onclick="$.liga('notificacion', 'Notificando desde jquery.liga.js' )" title="Si el navegador no las implementa o están desactivadas se muestra un mensaje">Notificación de Escritorio</button>
+        // Si el navegador no implementa Notificaciones de escritorio lanza un mensaje en el body 
+        $.liga('notificacion', 'Notificando desde jquery.liga.js');</pre>
+    
+    <h2><a href="historial.html">Gestión del historial AJAX</a></h2>
+    
+    <h2>Formularios AJAX con validación local</h2>
+    <form id="nvoUsr" method="POST" action="php/nuevoUsuario.php">
+        <fieldset class="ui-widget-content">
+            <legend class="ui-widget-header"><span class="ui-icon ui-icon-circle-plus" style="float: left; margin-right: .3em;"></span>Registro de usuarios nuevos</legend>
+            <div><label for="nombre"><span class="ui-icon ui-icon-bullet" style="float: left; margin-right: .3em;"></span>Nombre *&nbsp;</label> <input id="nombre" name="nombre" maxlength="200" /></div>
+            <div><label for="contraseña"><span class="ui-icon ui-icon-bullet" style="float: left; margin-right: .3em;"></span>Contraseña *&nbsp;</label> <input type="password" id="contraseña" name="contraseña" /></div>
+            <div><label for="edad"><span class="ui-icon ui-icon-bullet" style="float: left; margin-right: .3em;"></span>Edad&nbsp;</label> <input id="edad" name="edad" maxlength="2" /></div>
+            <div><label for="fecha"><span class="ui-icon ui-icon-bullet" style="float: left; margin-right: .3em;"></span>Fecha&nbsp;</label> <input id="fecha" name="fecha" /></div>
+            <div><button class="btn1"><span class="ui-icon ui-icon-check" style="float: left; margin-right: .3em;"></span>Enviar</button> <input type="reset" value="Cancelar" /></div>
+        </fieldset>
+    </form>
+    
+    <pre class="ui-widget-content">
+        // Se definen las reglas de validación para el formulario
+        var reglas = {
+         nombre       : {
+          requerido : true
+         },
+         'contraseña' : {
+          requerido : true,
+          cond      : 'valor.length > 5',
+          msj       : 'La contraseña debe contener más de 5 caracteres'
+         },
+         edad         : {
+          mayor     : 17,
+          menor     : 100,
+          msj       : 'La edad debe estar entre los 18 y 99 años'
+         },
+         fecha        : {
+          patron    : /^\d{4}-\d{2}-\d{2}$/,
+          msj       : 'La fecha debe tener el formato YYYY-MM-DD'
+         }
+        };
+        
+        // Permite modificar el valor de un campo después de la validación y antes del envío
+        var filtro = {
+         'contraseña' : function(valor) {
+          // Se cargó la biblioteca md5 de <a href="http://pajhome.org.uk/crypt/md5" target="_blank">http://pajhome.org.uk/crypt/md5</a>
+          return hex_md5(valor);
+         }
+        };
+        
+        // Se aplica AJAX al submit del formulario seleccionado
+        $('#nvoUsr').liga('AJAX', {reg:reglas, fil:filtro, mensajes:function(msj) {
+         // Colocamos los mensajes en un contener distinto al que viene por defecto
+         $('.flotante').liga('mensaje', msj);
+        }});</pre>
+    
+    <!--[if lt IE 9]>
+    <script src="IE9.js"></script>
+    <![endif]-->
+    <script type="text/javascript" src="js/jquery-1.8.3.min.js"></script>
+    <script type="text/javascript" src="http://code.jquery.com/ui/1.9.1/jquery-ui.js"></script><!---->
+    <script type="text/javascript" src="js/jquery.liga-1.1.min.js"></script>
+    <script type="text/javascript" src="js/md5.min.js"></script>
+    <script>
+        var reglas = {
+        nombre       : {
+         requerido : true
+        },
+        'contraseña' : {
+         requerido : true,
+         cond      : 'valor.length > 5',
+         msj       : 'La contraseña debe contener más de 5 caracteres'
+        },
+        edad         : {
+         mayor     : 17,
+         menor     : 100,
+         msj       : 'La edad debe estar entre los 18 y 99 años'
+        },
+        fecha        : {
+         patron    : /^\d{4}-\d{2}-\d{2}$/,
+         msj       : 'La fecha debe tener el formato YYYY-MM-DD'
+        }
+       };
+       var filtro = {
+        'contraseña' : function(valor) {
+         return hex_md5(valor);
+        }
+       };
+       $('#nvoUsr').liga('AJAX', {reg:reglas, fil:filtro, mensajes:function(msj) {
+         $('.flotante').liga('mensaje', msj);
+        }
+       });
+    </script>
+</body>
+</html>

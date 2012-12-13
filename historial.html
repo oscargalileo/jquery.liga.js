@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="Content-Type" content="text/html"; charset="utf-8">
+    <title>Historial AJAX con LIGA.js</title>
+    <link rel="shortcut icon" href="img/liga.ico">
+    <link rel="icon" type="image/gif" href="img/liga.gif">
+    <link href="css/LIGA.css" rel="stylesheet" media="all" />
+    <link href="css/jquery-ui/liga/jquery-ui-1.9.2.liga.min.css" rel="stylesheet" media="all" />
+    <style>
+      html {
+       background-color:#dfdfdf;
+      }
+      .flotante {
+       position:fixed;
+       right:10px;
+       top:10px
+      }
+      pre {
+       font-family:monospace;
+       background-color:#c4c4c4;
+       font-size:15px;
+       border-radius:5px;
+       padding:5px;
+      }
+      #contenedor {
+        width: 90%;
+        overflow: auto;
+        margin: 0px auto;
+        min-width:600px;
+        border:1px solid blue;
+      }
+      #menu {
+        width: 10%;
+        float: left;
+        border:1px solid red;
+      }
+      #principal {
+        width: 70%;
+        float:left;
+        border:1px solid green;
+      }
+      #secundario {
+        float:right;
+        width: 19%;
+        border:1px solid yellow;
+      }
+    </style>
+</head>
+<body>
+    <div class="flotante"></div>
+    <h1><img src="img/LIGA.png" alt="Proyecto LIGA" /></h1>
+    <p>La gestión del historial AJAX es una de las funcionalidades más destacables de jquery.liga.js</p>
+    <div id="contenedor">
+        <div id="menu">
+            <ul>
+                <li><a data="principal/mensaje=Primera opción del menú" class="menu">Opción 1</a></li>
+                <li><a data="secundario/mensaje=Segunda opción del menú" class="menu">Opción 2</a></li>
+                <li><a data="principal/:php/secund.php?mensaje=Cambio de URL XD" class="menu">Opción 3</a></li>
+            </ul>
+        </div>
+        <div id="principal">
+            Contenido principal
+        </div>
+        <div id="secundario">
+            Contenido secundario
+        </div>
+    </div>
+    <pre class="ui-widget-content">
+        var config = {
+            principal : {
+                url  : 'php/princ.php',
+                cache: true,
+                param: 'mensaje=Voy del cliente y regreso del servidor...'
+            },
+            secundario: {
+                url  : 'php/secund.php',
+                param: 'mensaje=Otro parámetro por defecto',
+                func : function(resp) {
+                    $('body').liga('alerta', {msj:resp, seg:3});
+                }
+            }
+        };
+        $.liga('historial', config);
+    </pre>
+    <!--[if lt IE 9]>
+    <script src="IE9.js"></script>
+    <![endif]-->
+    <script type="text/javascript" src="js/jquery-1.8.3.min.js"></script>
+    <!--<script type="text/javascript" src="http://code.jquery.com/ui/1.9.1/jquery-ui.js"></script><!---->
+    <script type="text/javascript" src="js/jquery.liga-1.1.min.js"></script>
+    <script>
+        var config = {
+            principal : {
+                url  : 'php/princ.php',
+                cache: true,
+                param: 'mensaje=Voy del cliente y regreso del servidor...'
+            },
+            secundario: {
+                url  : 'php/secund.php',
+                param: 'mensaje=Otro parámetro por defecto',
+                func : function(resp) {
+                    $('body').liga('mensaje', {msj:resp, seg:3});
+                }
+            }
+        };
+        $.liga('historial', config);
+        // Menú que implementa $.liga('cargar',...)
+        $('.menu').click(function(e) {
+            var hash = $(this).attr('data');
+            $.liga('cargar', hash);
+            e.preventDefault();
+        }).css({cursor:'pointer'});
+    </script>
+</body>
+</html>
