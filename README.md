@@ -20,16 +20,10 @@ http://unhiloenlared.blogspot.mx/
 
 Su uso por defecto es muy fácil, además permite configurar todos los elementos rápidamente, manual: http://goo.gl/Gxwp1
 
-Resumen de la API:
+Ejemplo funcionando (demo): http://148.202.148.10/matrix/jquery.liga/
 
-$('selector').liga('mensaje', config);
-$.liga('alerta', config);
-$.liga('pregunta', config);
-$.liga('memoria', llave, valor[, expira]);
-$.liga('notificacion', config);
-$('form').liga('AJAX', config);
+Manual de jquery.liga.js (habilitado para recibir comentarios): http://goo.gl/Gxwp1
 
-Gestión del historial AJAX
-$.liga('historial', contenedores);
-$.liga('cargar', 'id_del_contenedor/otro_pametro=su valor');
-$.liga('actualizar', 'id_del_contenedor[/parametros]');
+Ejemplo en jsFiddle: http://jsfiddle.net/oscargalileo/TX8D3/
+
+Ejemplos de jquery.liga.js: http://unhiloenlared.blogspot.mx/2012/12/introduccion-jqueryligajs.html
