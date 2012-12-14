@@ -500,7 +500,7 @@
                               forma.removeData(datos);
                              }).done(function(resp) {
                               // Respuesta satisfactoria
-                              settings['func']({msj:resp, seg:0});
+                              settings['func'](resp);
                              }).fail(function(resp, err, error) {
                               var msjs = {
                                'Not Found' : 'Recurso no encontrado en el servidor',
