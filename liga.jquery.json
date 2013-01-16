@@ -1,0 +1,28 @@
+{
+ "name"    : "liga",
+ "version" : "1.1",
+ "title"   : "jquery.liga.js",
+ "author"  : {
+  "name" : "Oscar Galileo García García"
+  "url"  : "https://plus.google.com/112403136871331686485/posts"
+ },
+ "keywords": [
+      "ui",
+    "ajax", "validation", "localStorage", "notifications", "cookies", "modal"
+      ],
+ "licenses": [{
+  "type" : "bsd-3-clause",
+  "url"  : "http://opensource.org/licenses/BSD-3-Clause"
+ }],
+ "dependencies" : {"jquery" : "1.x"},
+ "homepage" : "http://code.google.com/p/galileo-liga/",
+ "docs" : "http://goo.gl/Gxwp1",
+ "demo" : "http://jsfiddle.net/oscargalileo/TX8D3/",
+ "download" : "http://code.google.com/p/galileo-liga/downloads/list",
+ "maintainers": [
+    {
+      "name": "Oscar Galileo García García",
+      "email": "oscargalileo@gmail.com",
+      "url": "https://plus.google.com/112403136871331686485/posts"
+    } 
+}
