@@ -4,7 +4,8 @@
  "title"   : "jquery.liga.js",
  "author"  : {
   "name" : "Oscar Galileo García García",
-  "url"  : "https://plus.google.com/112403136871331686485/posts"
+  "email" : "oscargalileo@gmail.com",
+  "url"  : "https://plus.google.com/112403136871331686485"
  },
  "keywords": [
       "ui",
@@ -23,6 +24,6 @@
     {
       "name": "Oscar Galileo García García",
       "email": "oscargalileo@gmail.com",
-      "url": "https://plus.google.com/112403136871331686485/posts"
-    } 
+      "url": "https://plus.google.com/112403136871331686485"
+    } ]
 }
