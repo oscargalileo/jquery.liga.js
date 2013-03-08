@@ -8,7 +8,7 @@ El proyecto LIGA presenta jquery.liga.js, que no sólo es un plugin para JQuery,
   * Ventanas de confirmación (preguntas),
   * Almacenamiento local de datos (localStorage y cookies),
   * Notificaciones de escritorio (Webkit),
-  * Validación local de formularios y envío AJAX,
+  * Validación local de formularios (incluye archivos) y envío AJAX,
   * Gestión del historial AJAX,
   * Seguimiento de formularios y reproducción de sonidos (próximamente),
   * Tablas editables (próximamente).
@@ -18,9 +18,9 @@ Entre sus principales características destaca su compatibilidad con los estilos
 La biblioteca es compatible con los navegadores web más modernos y JQuery 1.8 o superior, cualquier problema encontrado puede contactarnos mediante el registro de issues, escribiendo en el Blog oficial o en la documentación:
 http://unhiloenlared.blogspot.mx/
 
-Su uso por defecto es muy fácil, además permite configurar todos los elementos rápidamente, manual: http://goo.gl/Gxwp1
+Su uso por defecto es sencillo, además permite configurar todos los elementos rápidamente, manual: http://goo.gl/Gxwp1
 
-Ejemplo funcionando (demo): http://148.202.148.10/matrix/jquery.liga/
+Ejemplo funcionando (demo sin subida de archivos): http://148.202.148.10/matrix/jquery.liga/
 
 Manual de jquery.liga.js (habilitado para recibir comentarios): http://goo.gl/Gxwp1
 
