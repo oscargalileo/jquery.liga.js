@@ -91,6 +91,7 @@
             <div><label for="contraseña"><span class="ui-icon ui-icon-bullet" style="float: left; margin-right: .3em;"></span>Contraseña *&nbsp;</label> <input type="password" id="contraseña" name="contraseña" /></div>
             <div><label for="edad"><span class="ui-icon ui-icon-bullet" style="float: left; margin-right: .3em;"></span>Edad&nbsp;</label> <input id="edad" name="edad" maxlength="2" /></div>
             <div><label for="fecha"><span class="ui-icon ui-icon-bullet" style="float: left; margin-right: .3em;"></span>Fecha&nbsp;</label> <input id="fecha" name="fecha" /></div>
+            <div><label for="foto"><span class="ui-icon ui-icon-bullet" style="float: left; margin-right: .3em;"></span>Foto *&nbsp;</label> <input type="file" id="foto" name="foto" /></div>
             <div><button class="btn1"><span class="ui-icon ui-icon-check" style="float: left; margin-right: .3em;"></span>Enviar</button> <input type="reset" value="Cancelar" /></div>
         </fieldset>
     </form>
@@ -114,6 +115,13 @@
          fecha        : {
           patron    : /^\d{4}-\d{2}-\d{2}$/,
           msj       : 'La fecha debe tener el formato YYYY-MM-DD'
+         },
+         foto         : {
+          msj       :'Foto no válida (1 jpg o png entre 500Kb y 5Mb)',
+          patron    : /image/,
+          tamin     : 0.5*1048576,
+          tamax     : 5*1048576,
+          numin     :1
          }
         };
         
@@ -136,7 +144,7 @@
     <![endif]-->
     <script type="text/javascript" src="js/jquery-1.8.3.min.js"></script>
     <script type="text/javascript" src="http://code.jquery.com/ui/1.9.1/jquery-ui.js"></script><!---->
-    <script type="text/javascript" src="js/jquery.liga-1.1.min.js"></script>
+    <script type="text/javascript" src="js/jquery.liga-1.2.min.js"></script>
     <script type="text/javascript" src="js/md5.min.js"></script>
     <script>
         var reglas = {
@@ -156,6 +164,13 @@
         fecha        : {
          patron    : /^\d{4}-\d{2}-\d{2}$/,
          msj       : 'La fecha debe tener el formato YYYY-MM-DD'
+        },
+        foto : {
+         msj:'Foto no válida (1 jpg o png entre 500Kb y 5Mb)',
+         patron: /image/,
+         tamin: 0.5*1048576,
+         tamax: 5*1048576,
+         numin:1
         }
        };
        var filtro = {
