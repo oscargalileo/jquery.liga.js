@@ -28,6 +28,35 @@
     function validar(input, regla, forma) {
         var valido = true;
         var valor  = input.val();
+        if (window.FormData) {
+          if (input.attr('type') == 'file') {
+           var campo = input.get(0);
+           var files = campo.files;
+           for (var i = 0; i < files.length; i++) {
+            if (files[i].name && files[i].size) { 
+             // Tamaño del archivo
+             if ((regla['tamin'] && files[i].size < regla['tamin']) || (regla['tamax'] && files[i].size > regla['tamax'])) {
+              return false;
+             }
+             // Tipo de archivo o extensión
+             var ext = files[i].name.substring(files[i].name.lastIndexOf('.')+1);
+             if (regla['patron']) {
+              var pat = regla['patron']['length'] ? regla['patron'] : [regla['patron']];
+              var val = false;
+              for (var j in pat) {
+                  if (pat[j].test(ext) || (files[i].type && pat[j].test(files[i].type))) {
+                      val = true;
+                  }
+              }
+              if (!val) {
+                  return false;
+              }
+             }
+            }
+           }
+           return true;
+          }
+        }
         // Patrones
         if (regla['patron']) {
             var pat = regla['patron']['length'] ? regla['patron'] : [regla['patron']];
@@ -409,11 +438,13 @@
                 error:function (msj, input, form, quitar) {
                     $('.error', input.parent()).remove();
                     if (!quitar) {
-                        var span= $('<span />').addClass('error ui-widget-content ui-state-error').css({display:'none'}).html('<span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span>'+msj);
+                        var span= $('<span />').addClass('error ui-widget-content ui-state-error')
+                         .css({display:'none'})
+                         .html('<span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span>'+msj);
                         input.parent().append(span.fadeIn('medium'));
                         input.one('change', function() {
                             var nom = input.attr('name');
-                            if (settings['reg'][nom]['requerido'] || input.val() !=='' ) {
+                            if (settings['reg'][nom]['requerido'] || input.val() !=='' || settings['reg'][nom]['numin']) {
                                 if(validar(input, settings['reg'][nom], form) === true) {
                                     settings['error'](msj, input, form, true);
                                 } else {
@@ -435,7 +466,8 @@
                 }
             }, options);
             return this.each(function() {
-                var forma       = $(this);
+                var forma = $(this);
+                var formh = this;
                 settings['url'] = (forma.attr('action')) ? forma.attr('action') : settings['url'];
                 forma.submit(function(e) {
                     // Dejamos que reset borre los errores si hay
@@ -443,7 +475,7 @@
                         settings['reset'](forma, e);
                     });
                     // Recorremos los campos para validar con las reglas
-                    var campos = forma.serializeArray();
+                    var campos  = forma.serializeArray();
                     var validos = true;
                     var form = {};
                     for (var i in campos) {
@@ -454,7 +486,7 @@
                         // Si tiene regla lo valida
                         if (settings['reg'][campo]) {
                             var regla = settings['reg'][campo];
-                            var msj = (settings['reg'][campo]['msj']) ? settings['reg'][campo]['msj'] : 'El campo '+campo+' no es válido';
+                            var msj = (regla['msj']) ? regla['msj'] : 'El campo '+campo+' no es válido';
                             if (regla['requerido']) {
                                 if (valor !== '') {
                                     if (!validar(input, regla, forma)) {
@@ -476,42 +508,121 @@
                         }
                         // Si tiene filtro lo aplica
                         if (settings['fil'][campo]) {
-                            form[campo] = settings['fil'][campo](valor);
-                        } else {
-                            form[campo] = valor;
+                         form[campo] = valor;
+                         formh[campo].value = settings['fil'][campo](valor); 
                         }
                     }
+                    // Recorremos los campos de tipo archivo
+                    var archivos = false;
+                    var campos = $(':file', forma);
+                    var conAPI = true;
+                    if (window.FormData) {
+                      campos.each(function() {
+                       var campo = this;
+                       $(campo).unbind('change');
+                       // Si tiene regla lo valida
+                       if (settings['reg'][campo.name]) {
+                        var regla = settings['reg'][campo.name];
+                        var msj   = (regla['msj']) ? regla['msj'] : 'Archivo(s) inválido(s) en el campo '+campo.name;
+                        var files = this.files;
+                        if (files.length > 0) {
+                         archivos = true;
+                         if (!validar($(campo), regla, forma)) {
+                          settings['error'](msj, $(campo), forma);
+                          validos = false;
+                         }
+                        } else {
+                         if (regla['numin'] && files.length < regla['numin']) {
+                           settings['error'](msj, $(campo), forma);
+                           validos = false;
+                          }
+                        }
+                       }
+                      });
+                    } else if(campos.size() > 0) {
+                     conAPI = false;
+                    }
                     if (validos) {
+                        $('.error', forma).remove();
                         // Registro el envío en una cola para este formulario
                         var datos = forma.serialize();
                         if (! forma.data(datos)) {
                             settings['mensajes']({msj:'<span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span> Enviando información al servidor', seg: 2, conservar:false});
                             forma.data(datos, true);
-                            // Realizo la petición asíncrona
-                            var metodo = (forma.attr('method').toUpperCase() == 'POST') ? 'POST' : 'GET';
-                            var config = {
-                             url    : settings['url'],
-                             timeout: settings['seg']*1000,
-                             type   : metodo,
-                             data   : form
-                            };
-                            $.ajax(config).always(function(resp) {
-                              // Se remueve de la cola de peticiones
-                              forma.removeData(datos);
-                             }).done(function(resp) {
-                              // Respuesta satisfactoria
-                              settings['func'](resp);
-                             }).fail(function(resp, err, error) {
-                              var msjs = {
-                               'Not Found' : 'Recurso no encontrado en el servidor',
-                               'timeout'   : 'Se superó el tiempo de espera'
+                            if (conAPI) {
+                              // Realizo la petición asíncrona
+                              var metodo = (forma.attr('method').toUpperCase() == 'POST') ? 'POST' : 'GET';
+                              var formD;
+                              var config = {
+                               url    : settings['url'],
+                               timeout: settings['seg']*1000,
+                               type   : metodo
                               };
-                              var msj = (msjs[error]) ? msjs[error] : 'Error en el servidor';
-                              settings['func']({msj:'<span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span>'+msj+', inténtelo de nuevo más tarde', seg:0, tit:err, 'class':'msj2 ui-state-error'});
-                             });
+                              if (archivos && window.FormData) {
+                               formD = new FormData(formh);
+                               settings['mensajes']({msj:'<span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span> Subiendo <progress id="LIGAprogress"><em id="progreso"></em></progress>', seg:5, conservar:true});
+                               config['contentType'] = false;
+                               config['processData'] = false;
+                               config['cache'] = false;
+                               config['xhr'] = function() {
+                                // Barra de progreso
+                                var xhr = $.ajaxSettings.xhr();
+                                if(xhr.upload){
+                                 var barra = $('progress#LIGAprogress');
+                                 var prog = $('#progreso');
+                                 xhr.upload.addEventListener('progress', function(e) {
+                                  if(e.lengthComputable) {
+                                   barra.attr({value:e.loaded, max:e.total});
+                                   prog.text(e.loaded+' de '+e.total);
+                                   if (e.loaded >= e.total) {
+                                    barra.parent().fadeOut(function() {
+                                     $(this).remove();
+                                    });
+                                   }
+                                  }
+                                 }, false);
+                                }
+                                return xhr;
+                               };
+                              } else {
+                               formD = $(formh).serialize();
+                              }
+                              config['data'] = formD;
+                              $.ajax(config).always(function(resp) {
+                                // Se remueve de la cola de peticiones
+                                forma.removeData(datos);
+                               }).done(function(resp) {
+                                // Respuesta satisfactoria
+                                settings['func'](resp);
+                               }).fail(function(resp, err, error) {
+                                var msjs = {
+                                 'Not Found' : 'Recurso no encontrado en el servidor',
+                                 'timeout'   : 'Se superó el tiempo de espera'
+                                };
+                                var msj = (msjs[error]) ? msjs[error] : 'Error en el servidor';
+                                settings['func']({msj:'<span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span>'+msj+', inténtelo de nuevo más tarde', seg:0, tit:err, 'class':'msj2 ui-state-error'});
+                               });
+                             } else {
+                                // Técnica del iFrame oculto para IE9 y anteriores
+                                var iframe = $('<iframe />').css({width:0, height:0, display:'none'}).attr('name', 'LIGAreceptor');
+                                $('body').append(iframe);
+                                forma.attr('target', 'LIGAreceptor').attr('enctype', 'multipart/form-data');
+                                forma.unbind('submit');
+                                forma.submit();
+                                iframe.load(function() {
+                                    var resp = iframe.contents();
+                                    settings['func']($('body', resp).html());
+                                    forma.removeData(datos);
+                                    forma.liga('AJAX', settings);
+                                });
+                             }
                         } else {
                             settings['mensajes']({msj:'<span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span> Procesando la información, espere por favor', seg:2, conservar:false, 'class':'msj2 ui-state-error'});
                         }
+                    }
+                    // Se restauran los valores originales
+                    for (var campo in settings['fil']) {
+                     formh[campo].value = form[campo];
                     }
                     e.preventDefault();
                 });
