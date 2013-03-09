@@ -10,7 +10,7 @@
  },
  "keywords": [
       "ui",
-    "ajax", "validation", "localStorage", "notifications", "cookies", "modal"
+    "ajax", "validation", "localStorage", "notifications", "cookies", "modal", "fileupload"
       ],
  "licenses": [{
   "type" : "bsd-3-clause",
