@@ -551,7 +551,7 @@
                             forma.data(datos, true);
                             if (conAPI) {
                               // Realizo la petición asíncrona
-                              var metodo = (forma.attr('method').toUpperCase() == 'POST') ? 'POST' : 'GET';
+                              var metodo = forma.attr('method') ? forma.attr('method') : 'GET';
                               var formD;
                               var config = {
                                url    : settings['url'],
