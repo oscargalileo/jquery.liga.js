@@ -24,6 +24,6 @@ Ejemplo funcionando (demo sin subida de archivos): http://148.202.148.10/matrix/
 
 Manual de jquery.liga.js (habilitado para recibir comentarios): http://goo.gl/Gxwp1
 
-Ejemplo en jsFiddle: http://jsfiddle.net/oscargalileo/TX8D3/
+Ejemplo en jsFiddle: http://jsfiddle.net/TX8D3/14/
 
 Ejemplos de jquery.liga.js: http://unhiloenlared.blogspot.mx/2012/12/introduccion-jqueryligajs.html
