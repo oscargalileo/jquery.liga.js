@@ -499,7 +499,7 @@
             var forma = $(el);
             var formh = el;
             settings['url'] = (forma.attr('action')) ? forma.attr('action') : settings['url'];
-            forma.submit(function(e) {
+            forma.on('submit', function(e) {
                 // Dejamos que reset borre los errores si hay
                 forma.bind('reset', function(e) {
                     settings['reset'](forma, e);
