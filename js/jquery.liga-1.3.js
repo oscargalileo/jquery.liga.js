@@ -15,7 +15,7 @@
             height   : '105%',
             margin   : '-10px',
             position : 'fixed',
-            'z-index': 10,
+            'z-index': 1000,
             opacity  : '0.6',
             filter   : 'alpha(opacity = 60)'}
         );
@@ -27,9 +27,9 @@
         var msjIz = ven.outerWidth()/2;
         var msjAr = ven.outerHeight()/2;
         if ((msjIz*2)>((iz*2)*0.5)) {
-            ven.animate({position:'fixed', left:5, top :5, right:5});
+            ven.css({position:'fixed', left:5, top :5, right:5, 'z-index': 1500});
         } else {
-            ven.css({position:'fixed', left:iz-msjIz, top :(ar-msjAr)*0.4});
+            ven.css({position:'fixed', left:iz-msjIz, top :(ar-msjAr)*0.4, 'z-index': 1500});
         }
     }
     // Valida los campos de un formulario a partir de sus reglas
