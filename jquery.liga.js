@@ -1,7 +1,7 @@
 /*
  *  Project: LIGA.js
  *  Description: Plugin que integra una serie de funciones y métodos para facilitar la programación de aplicaciones web.
- *  Author: Ing. Oscar Galileo García García
+ *  Author: Mtro. Oscar Galileo García García
  *  License: BSD-3
  */
 ;(function ( $, window, document, undefined ) {
@@ -473,7 +473,7 @@
                          .css({display:'none'})
                          .html('<span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span>'+msj);
                         input.parent().append(span.fadeIn('medium'));
-                        input.one('change', function() {
+                        input.one('change.liga', function() {
                             var nom = input.attr('name');
                             if (settings['reg'][nom]['requerido'] || input.val() !=='' || settings['reg'][nom]['numin']) {
                                 if(validar(input, settings['reg'][nom], form) === true) {
@@ -499,9 +499,9 @@
             var forma = $(el);
             var formh = el;
             settings['url'] = (forma.attr('action')) ? forma.attr('action') : settings['url'];
-            forma.on('submit', function(e) {
+            forma.on('submit.liga', function(e) {
                 // Dejamos que reset borre los errores si hay
-                forma.bind('reset', function(e) {
+                forma.bind('reset.liga', function(e) {
                     settings['reset'](forma, e);
                 });
                 // Recorremos los campos para validar con las reglas
@@ -512,7 +512,7 @@
                     var campo = campos[i]['name'];
                     var valor = campos[i]['value'];
                     var input = $('[name='+campo+']', forma);
-                    input.unbind('change');
+                    input.unbind('change.liga');
                     // Si tiene regla lo valida
                     if (settings['reg'][campo]) {
                         var regla = settings['reg'][campo];
@@ -549,7 +549,7 @@
                 if (window.FormData) {
                   campos.each(function() {
                    var campo = this;
-                   $(campo).unbind('change');
+                   $(campo).unbind('change.liga');
                    // Si tiene regla lo valida
                    if (settings['reg'][campo.name]) {
                     var regla = settings['reg'][campo.name];
@@ -637,7 +637,7 @@
                             var iframe = $('<iframe />').css({width:0, height:0, display:'none'}).attr('name', 'LIGAreceptor');
                             $('body').append(iframe);
                             forma.attr('target', 'LIGAreceptor').attr('enctype', 'multipart/form-data');
-                            forma.unbind('submit');
+                            forma.unbind('submit.liga');
                             forma.submit();
                             iframe.load(function() {
                                 var resp = iframe.contents();
