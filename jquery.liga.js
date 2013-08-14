@@ -429,7 +429,7 @@
             if($el.context.tagName === 'BODY') {
                 var div = $('#LIGADIVFLOTANTE');
                 if (div.length == 0) {
-                 div = $('<div />').attr('id', 'LIGADIVFLOTANTE').css({width:'400px',position:'fixed','left':'50%'});
+                 div = $('<div />').attr('id', 'LIGADIVFLOTANTE').css({width:'400px',position:'fixed','left':'50%', 'z-index':900});
                  $('body').prepend(div.css({position:'fixed','margin-left':'-200px'}));
                 }
                 div.prepend(cont);
