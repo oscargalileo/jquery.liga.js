@@ -652,7 +652,9 @@
                 }
                 // Se restauran los valores originales
                 for (var campo in settings['fil']) {
-                 formh[campo].value = form[campo];
+                    if (formh[campo] && form[campo]) {
+                        formh[campo].value = form[campo];
+                    }
                 }
                 e.preventDefault();
             });
