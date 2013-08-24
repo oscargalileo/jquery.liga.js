@@ -59,6 +59,10 @@ span.error {
     padding: 3px;
     position:absolute;
 }
+.sin-scroll {
+  height: 100%;
+  overflow: hidden;
+}
 /* $.liga('alerta', ...) */
 .titAlerta {
     z-index:60;
