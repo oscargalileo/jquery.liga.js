@@ -18,7 +18,14 @@
             'z-index': 1000,
             opacity  : '0.6',
             filter   : 'alpha(opacity = 60)'}
-        );
+        ).click(function() {
+            var btns = $('.cerrarMsjAlerta');
+            if (btns.size() > 1) {
+                $('.btn2').click();
+            } else {
+                btns.click();
+            }
+        });
     }
     // Centra un alerta y pregunta
     function centrar(ven) {
@@ -221,12 +228,14 @@
             }, options);
             // Capa para bloquear otros elementos de la página
             var div = bloqueador();
+            $('body').addClass('sin-scroll');
             $('body').prepend(div);
             // Cuadro de título de la alerta
             var tit = $('<div />').addClass('titAlerta ui-widget-header').html('<span class="ui-icon ui-icon-notice" style="float: left; margin-right: .3em;"></span>'+settings['tit']);
             // Botón para cerrar la ventana de alerta
             var btn = $('<button />').addClass('cerrarMsjAlerta btn1').html(settings['btn']).click(function (e) {
                 $(this).parent().slideUp(settings['vel'], function () {
+                    $('body').removeClass('sin-scroll');
                     settings['func']();
                     div.remove();
                     $(this).remove();
@@ -271,6 +280,7 @@
             }, options);
             // Capa para bloquear otros elementos de la página
             var div = bloqueador();
+            $('body').addClass('sin-scroll');
             $('body').prepend(div);
             // Cuadro de título de la pregunta
             var tit = $('<div />').addClass('titAlerta ui-widget-header').html('<span class="ui-icon ui-icon-help" style="float: left; margin-right: .3em;"></span>'+settings['tit']);
@@ -278,6 +288,7 @@
             var btS = $('<button />').addClass('cerrarMsjAlerta btn1').html(settings['btnS']).click(function (e) {
                 settings['funcS']();
                 $(this).parent().slideUp(settings['vel'], function () {
+                    $('body').removeClass('sin-scroll');
                     div.remove();
                     $(this).remove();
                 });
@@ -286,6 +297,7 @@
             var btN = $('<button />').addClass('cerrarMsjAlerta btn2').html(settings['btnN']).click(function (e) {
                 settings['funcN']();
                 $(this).parent().slideUp(settings['vel'], function () {
+                    $('body').removeClass('sin-scroll');
                     div.remove();
                     $(this).remove();
                 });
@@ -652,7 +664,9 @@
                 }
                 // Se restauran los valores originales
                 for (var campo in settings['fil']) {
-                 formh[campo].value = form[campo];
+                    if (formh[campo] && form[campo]) {
+                        formh[campo].value = form[campo];
+                    }
                 }
                 e.preventDefault();
             });
