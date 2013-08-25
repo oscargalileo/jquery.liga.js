@@ -664,7 +664,7 @@
                 }
                 // Se restauran los valores originales
                 for (var campo in settings['fil']) {
-                    if (formh[campo] && form[campo]) {
+                    if (formh[campo]) {
                         formh[campo].value = form[campo];
                     }
                 }
