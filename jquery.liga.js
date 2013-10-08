@@ -228,14 +228,14 @@
             }, options);
             // Capa para bloquear otros elementos de la página
             var div = bloqueador();
-            $('body').addClass('sin-scroll');
+            $('body').addClass('sin-scroll').attr('unselectable', 'on').attr('onselectstart', 'return false;').attr('onmousedown', 'return false;');
             $('body').prepend(div);
             // Cuadro de título de la alerta
             var tit = $('<div />').addClass('titAlerta ui-widget-header').html('<span class="ui-icon ui-icon-notice" style="float: left; margin-right: .3em;"></span>'+settings['tit']);
             // Botón para cerrar la ventana de alerta
             var btn = $('<button />').addClass('cerrarMsjAlerta btn1').html(settings['btn']).click(function (e) {
                 $(this).parent().slideUp(settings['vel'], function () {
-                    $('body').removeClass('sin-scroll');
+                    $('body').removeClass('sin-scroll').removeAttr('unselectable').removeAttr('onselectstart').removeAttr('onmousedown');
                     settings['func']();
                     div.remove();
                     $(this).remove();
