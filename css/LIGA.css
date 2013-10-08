@@ -60,8 +60,13 @@ span.error {
     position:absolute;
 }
 .sin-scroll {
-  height: 100%;
+  position: relative;
+  margin-right: 24.8px;
   overflow: hidden;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select:none;
+  user-select:none;
 }
 /* $.liga('alerta', ...) */
 .titAlerta {
