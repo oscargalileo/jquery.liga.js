@@ -25,7 +25,7 @@
             } else {
                 btns.click();
             }
-        }).attr('onselectstart', 'return false;').attr('onmousedown', 'return false;');
+        });
     }
     // Centra un alerta y pregunta
     function centrar(ven) {
@@ -228,7 +228,7 @@
             }, options);
             // Capa para bloquear otros elementos de la página
             var div = bloqueador();
-            $('body').addClass('sin-scroll');
+            $('body').addClass('sin-scroll').attr('unselectable', 'on').attr('onselectstart', 'return false;').attr('onmousedown', 'return false;');
             $('body').prepend(div);
             // Cuadro de título de la alerta
             var tit = $('<div />').addClass('titAlerta ui-widget-header').html('<span class="ui-icon ui-icon-notice" style="float: left; margin-right: .3em;"></span>'+settings['tit']);
@@ -247,8 +247,6 @@
             // Armamos el rompecabezas en la ventana
             var ven = $('<div />').addClass(settings['class']+' ui-widget-content').prepend(tit, msj, btn);
             $('body').prepend(ven);
-            // Desbloqueo la selección de texto en la ventana
-            $('.contAlerta').css('user-select', 'text');
             // Centramos la alerta en la ventana
             centrar(ven);
             // Hacemos que la ventana aparezca
@@ -310,8 +308,6 @@
             // Armamos el rompecabezas en la ventana
             var ven = $('<div />').addClass(settings['class']+' ui-widget-content').prepend(tit, msj, btS, btN);
             $('body').prepend(ven);
-            // Desbloqueo la selección de texto en la ventana
-            $('.contAlerta').css('user-select', 'text');
             // Centramos la alerta en la ventana
             centrar(ven);
             // Hacemos que la ventana aparezca
