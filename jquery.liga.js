@@ -383,33 +383,49 @@
                 funClic: function () {}
             }, options);
             // Si las notificaciones no están disponibles se muestran alertas
-            if(!window.webkitNotifications) {
+            if(!('Notification' in window) && !window.webkitNotifications) {
                 settings['msj'] = '<img src="'+settings['img']+'" width="35" height="35" style="float: left;" /> '+settings['msj'];
                 return $(settings['alt']).liga('mensaje', settings);
             }
-            var per = window.webkitNotifications.checkPermission();
-            if (per == 2) {
+            var per = ('Notification' in window) ? Notification.permission : window.webkitNotifications.checkPermission();
+            if (per == 2 && per == 'denied') {
                 settings['msj'] = '<img src="'+settings['img']+'" width="35" height="35" style="float: left;" /> '+settings['msj'];
                 return $(settings['alt']).liga('mensaje', settings);
             }
             // Solicita el permiso y lanza la primera notificación
-            if(per > 0) {
-                window.webkitNotifications.requestPermission(function() {
-                    return $.liga('notificacion', settings);
-                });
+            if(per > 0 && per != 'default') {
+                if ('Notification' in window) {
+                    Notification.requestPermission(function() {
+                        return $.liga('notificacion', settings);
+                    });
+                } else {
+                    window.webkitNotifications.requestPermission(function() {
+                        return $.liga('notificacion', settings);
+                    });
+                }
             } else {
-                var notif = window.webkitNotifications.createNotification(settings['img'], settings['tit'], settings['msj']);
+                var notif;
+                if ('Notification' in window) {
+                    notif = new Notification(settings['tit'], {body: settings['msj'], icon: settings['img']});
+                    notif.onerror = function() {
+                        $(settings['alt']).liga('mensaje', settings);
+                    };
+                    if(settings['seg']) {
+                        setTimeout(function() {
+                            notif.close();
+                        }, settings['seg']*1000);
+                    }
+                } else {
+                    notif = window.webkitNotifications.createNotification(settings['img'], settings['tit'], settings['msj']);
+                    notif.show();
+                    if(settings['seg']) {
+                        setTimeout(function() {
+                            notif.cancel();
+                        }, settings['seg']*1000);
+                    }
+                }
                 notif.onclose = settings['func'];
                 notif.onclick = settings['funClic'];
-                /*notif.onerror = function() {
-                    $(settings['alt']).liga('mensaje', settings);
-                }*/
-                notif.show();
-                if(settings['seg']) {
-                    setTimeout(function() {
-                        notif.cancel();
-                    }, settings['seg']*1000);
-                }
             }
             return notif;
         },
