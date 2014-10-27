@@ -49,7 +49,7 @@
 span.error {
     font-size:102%px;
     font-weight:bold;
-    color:#b7351e;
+    /*color:#b7351e;*/
     border:1px solid #b7351e;
     background-color: #ffd779;
     border-radius:3px;
