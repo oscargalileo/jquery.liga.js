@@ -388,12 +388,12 @@
                 return $(settings['alt']).liga('mensaje', settings);
             }
             var per = ('Notification' in window) ? Notification.permission : window.webkitNotifications.checkPermission();
-            if (per == 2 && per == 'denied') {
+            if (per == 2 || per == 'denied') {
                 settings['msj'] = '<img src="'+settings['img']+'" width="35" height="35" style="float: left;" /> '+settings['msj'];
                 return $(settings['alt']).liga('mensaje', settings);
             }
             // Solicita el permiso y lanza la primera notificación
-            if(per > 0 && per != 'default') {
+            if(per > 0 || per == 'default') {
                 if ('Notification' in window) {
                     Notification.requestPermission(function() {
                         return $.liga('notificacion', settings);
