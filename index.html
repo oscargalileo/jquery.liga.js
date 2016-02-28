@@ -47,14 +47,14 @@
         $('body').liga('mensaje', 'Mensaje de pruebas con jquery.liga.js');
         
     <button class="btn2" onclick="$('.flotante').liga('mensaje', {msj:'Mensaje alterno con class personalizado y colocado en un contenedor distinto a <em>body</em>, puede tener HTML: <img src=\'img/LIGA.png\' />','class':'msj2'})">Mensaje (en contenedor flotante a la derecha)</button>    
-        $('.flotante').liga('mensaje',  {msj:'Mensaje alterno con class personalizado 
+        $('.flotante').liga('mensaje',  {msj:'Mensaje alterno con class personalizado
         y colocado en un contenedor distinto a &lt;em>body&lt;/em>, puede tener HTML: &lt;img src="img/LIGA.png" />', 'class':'msj2'} );</pre>
 
     <pre class="ui-widget-content">
-    <button class="btn1" onclick="$.liga('alerta', {msj:'Ventana de alerta personalizable, acepta HTML: <pre>Código  fuente...</pre> <input /> <img src=\'img/LIGAG.png\' />', tit:'Con título'})">Ventana de Alerta</button>
+    <button class="btn1" onclick="$.liga('alerta', {msj:'Ventana de alerta personalizable, acepta HTML: <pre>Código  fuente...</pre> <img src=\'img/LIGAG.png\' />', tit:'Con título'})">Ventana de Alerta</button>
         $.liga('alerta',  {msj:'Ventana de alerta personalizable, acepta HTML: &lt;pre&gt;Código  fuente...&lt;/pre&gt; &lt;img src="img/LIGAG.png" /&gt;',
                            tit:'Con título'} );
-                           
+
     <button class="btn2" onclick="$.liga('pregunta', {msj:'¿Le gusta LIGA.js?',funcS:function() {$.liga('alerta', '¡Muchas gracias!')}, funcN:function() {$.liga('alerta', ':,(')}} )">Ventana de Pregunta (confirmación)</button>    
         $.liga('pregunta', {msj:'¿Le gusta LIGA.js?',
                             funcS:function() {
@@ -68,11 +68,11 @@
     <pre class="ui-widget-content">
     <button class="btn1" onclick="$.liga('memoria', ['llave', 'valor'])" title="En memoria local o cookie según el navegador">Guardar valor</button>
         $.liga('memoria', ['llave', 'valor']);
-    
+
     <button class="btn1" onclick="$.liga('alerta', {msj:$.liga('memoria', ['llave']), tit:'La llave contiene:'} )" title="Muestra el contenido de llave en una alerta">Mostrar valor</button>
         var dato = $.liga('memoria', ['llave']);
         $.liga('alerta', {msj: dato, tit: 'La llave contiene'} );
-    
+
     <button class="btn2" onclick="$.liga('memoria', ['llave', null])">Borrar valor</button>
         $.liga('memoria', ['llave', null]);</pre>
     
@@ -96,7 +96,7 @@
             <div><button class="btn1"><span class="ui-icon ui-icon-check" style="float: left; margin-right: .3em;"></span>Enviar</button> <input type="reset" value="Cancelar" /></div>
         </fieldset>
     </form>
-    
+
     <pre class="ui-widget-content">
         // Se definen las reglas de validación para el formulario
         var reglas = {
@@ -118,14 +118,14 @@
           msj       : 'La fecha debe tener el formato YYYY-MM-DD'
          },
          foto         : {
-          msj       : 'Foto no válida (1 jpg o png entre 500Kb y 5Mb)',
+          msj       : 'Foto no válida (1 jpg o png entre 100Kb y 5Mb)',
           patron    : /image/,
-          tamin     : 0.5*1048576,
-          tamax     : 5*1048576,
+          tamin     : 0.1,
+          tamax     : 5,
           numin     : 1
          }
         };
-        
+
         // Permite modificar el valor de un campo después de la validación y antes del envío
         var filtro = {
          'contraseña' : function(valor) {
@@ -133,27 +133,27 @@
           return hex_md5(valor);
          }
         };
-        
+
         // Se aplica AJAX al submit del formulario seleccionado
         $('#formulario').liga('AJAX', {reg:reglas, fil:filtro, mensajes:function(msj) {
          // Colocamos los mensajes en un contener distinto al que viene por defecto
          $('.flotante').liga('mensaje', msj);
         }});</pre>
-    
+
     <!--[if lt IE 9]>
     <script src="IE9.js"></script>
     <![endif]-->
     <!--[if lt IE 9]>
-    <script src="js/jquery-1.11.3.min.js"></script>
+    <script src="js/jquery-1.12.1.min.js"></script>
     <![endif]-->
     <!--[if gte IE 9]><!-->
-        <script src="js/jquery-2.1.4.min.js"></script>
+        <script src="js/jquery-2.2.1.min.js"></script>
     <!--<![endif]-->
-    <script type="text/javascript" src="http://code.jquery.com/ui/1.9.1/jquery-ui.js"></script><!---->
-    <script type="text/javascript" src="js/jquery.liga-1.3.10.js"></script>
+    <script type="text/javascript" src="js/jquery-ui.min.js"></script><!---->
+    <script type="text/javascript" src="js/jquery.liga-1.3.11.js"></script><!---->
     <!--<script type="text/javascript" src="jquery.liga.js"></script>-->
     <script type="text/javascript" src="js/md5.min.js"></script>
-    <script>
+    <script type="text/javascript">
         var reglas = {
         nombre       : {
          requerido : true
@@ -173,10 +173,10 @@
          msj       : 'La fecha debe tener el formato YYYY-MM-DD'
         },
         foto : {
-         msj:'Foto no válida (1 jpg o png entre 500Kb y 5Mb)',
+         msj:'Foto no válida (1 imagen entre 100Kb y 5Mb)',
          patron: /image/,
-         tamin: 0.5*1048576,
-         tamax: 5*1048576,
+         tamin: 0.1,
+         tamax: 5,
          numin:1
         }
        };

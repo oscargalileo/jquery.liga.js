@@ -6,6 +6,7 @@
  */
 ;(function ( $, window, document, undefined ) {
     var pluginName = "liga";
+    zIndexLIGAjs = 1000;
 
     // Funciones auxiliares
     // DIV que bloquea otros elementos con los alert y preguntas
@@ -15,17 +16,10 @@
             height   : '105%',
             margin   : '-10px',
             position : 'fixed',
-            'z-index': 1000,
+            'z-index': zIndexLIGAjs++,
             opacity  : '0.6',
             filter   : 'alpha(opacity = 60)'}
-        ).click(function() {
-            var btns = $('.cerrarMsjAlerta');
-            if (btns.size() > 1) {
-                $('.btn2').click();
-            } else {
-                btns.click();
-            }
-        }).attr('onselectstart', 'return false;').attr('onmousedown', 'return false;');
+        ).attr('onselectstart', 'return false;').attr('onmousedown', 'return false;');
     }
     // Centra un alerta y pregunta
     function centrar(ven) {
@@ -34,9 +28,9 @@
         var msjIz = ven.outerWidth()/2;
         var msjAr = ven.outerHeight()/2;
         if ((msjIz*2)>((iz*2)*0.5)) {
-            ven.css({position:'fixed', left:5, top :5, right:5, 'z-index': 1500});
+            ven.css({position:'fixed', left:5, top :5, right:5, 'z-index': (zIndexLIGAjs++)+500});
         } else {
-            ven.css({position:'fixed', left:iz-msjIz, top :(ar-msjAr)*0.4, 'z-index': 1500});
+            ven.css({position:'fixed', left:iz-msjIz, top :(ar-msjAr)*0.4, 'z-index': (zIndexLIGAjs++)+500});
         }
     }
     // Valida los campos de un formulario a partir de sus reglas
@@ -50,7 +44,7 @@
            for (var i = 0; i < files.length; i++) {
             if (files[i].name && files[i].size) {
              // Tamaño del archivo
-             if ((regla['tamin'] && files[i].size < regla['tamin']) || (regla['tamax'] && files[i].size > regla['tamax'])) {
+             if ((regla['tamin'] && files[i].size < regla['tamin']*1048576) || (regla['tamax'] && files[i].size > regla['tamax']*1048576)) {
               return false;
              }
              // Tipo de archivo o extensión
@@ -235,12 +229,17 @@
             // Botón para cerrar la ventana de alerta
             var btn = $('<button />').addClass('cerrarMsjAlerta btn1').html(settings['btn']).click(function (e) {
                 $(this).parent().slideUp(settings['vel'], function () {
-                    $('body').removeClass('sin-scroll').removeAttr('unselectable').removeAttr('onselectstart').removeAttr('onmousedown');
+                    if ($('.bloquea').size() == 1) {
+                        $('body').removeClass('sin-scroll');
+                    }
                     settings['func']();
                     div.remove();
                     $(this).remove();
                 });
                 e.preventDefault();
+            });
+            div.click(function() {
+                btn.click();
             });
             // Mensaje del alerta
             var msj = $('<div />').addClass('contAlerta').html(settings['msj']);
@@ -299,11 +298,16 @@
             var btN = $('<button />').addClass('cerrarMsjAlerta btn2').html(settings['btnN']).click(function (e) {
                 settings['funcN']();
                 $(this).parent().slideUp(settings['vel'], function () {
-                    $('body').removeClass('sin-scroll');
+                    if ($('.bloquea').size() == 1) {
+                        $('body').removeClass('sin-scroll');
+                    }
                     div.remove();
                     $(this).remove();
                 });
                 e.preventDefault();
+            });
+            div.click(function() {
+                btN.click();
             });
             // Texto de la pregunta
             var msj = $('<div />').addClass('contAlerta').html(settings['msj']);
@@ -461,7 +465,7 @@
             if($el.context.tagName === 'BODY') {
                 var div = $('#LIGADIVFLOTANTE');
                 if (div.length == 0) {
-                 div = $('<div />').attr('id', 'LIGADIVFLOTANTE').css({width:'400px',position:'fixed','left':'50%', 'z-index':900});
+                 div = $('<div />').attr('id', 'LIGADIVFLOTANTE').css({width:'400px',position:'fixed','left':'50%', 'z-index':(zIndexLIGAjs++)-100});
                  $('body').prepend(div.css({position:'fixed','margin-left':'-200px'}));
                 }
                 div.prepend(cont);
