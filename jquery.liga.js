@@ -1,5 +1,5 @@
 /*
- *  Project: LIGA.js
+ *  Project: LIGA.js 1.3.12
  *  Description: Plugin que integra una serie de funciones y métodos para facilitar la programación de aplicaciones web.
  *  Author: Mtro. Oscar Galileo García García
  *  License: BSD-3
@@ -12,9 +12,9 @@
     // DIV que bloquea otros elementos con los alert y preguntas
     function bloqueador() {
         return $('<div />').addClass('bloquea').css(
-            {width   : '105%',
-            height   : '105%',
-            margin   : '-10px',
+            {width   : '110%',
+            height   : '110%',
+            margin   : '-15px',
             position : 'fixed',
             'z-index': zIndexLIGAjs++,
             opacity  : '0.6',
@@ -229,7 +229,7 @@
             // Botón para cerrar la ventana de alerta
             var btn = $('<button />').addClass('cerrarMsjAlerta btn1').html(settings['btn']).click(function (e) {
                 $(this).parent().slideUp(settings['vel'], function () {
-                    if ($('.bloquea').size() == 1) {
+                    if ($('.bloquea').length == 1) {
                         $('body').removeClass('sin-scroll');
                     }
                     settings['func']();
@@ -298,7 +298,7 @@
             var btN = $('<button />').addClass('cerrarMsjAlerta btn2').html(settings['btnN']).click(function (e) {
                 settings['funcN']();
                 $(this).parent().slideUp(settings['vel'], function () {
-                    if ($('.bloquea').size() == 1) {
+                    if ($('.bloquea').length == 1) {
                         $('body').removeClass('sin-scroll');
                     }
                     div.remove();
@@ -462,7 +462,7 @@
                                    .append(btn, settings['msj']);
             // Si es body colocarlo en un DIV flotante (crearlo si no existe)
             var $el = $(el);
-            if($el.context.tagName === 'BODY') {
+            if($el.is('body')) {
                 var div = $('#LIGADIVFLOTANTE');
                 if (div.length == 0) {
                  div = $('<div />').attr('id', 'LIGADIVFLOTANTE').css({width:'400px',position:'fixed','left':'50%', 'z-index':(zIndexLIGAjs++)-100});
@@ -605,7 +605,7 @@
                     }
                    }
                   });
-                } else if(campos.size() > 0) {
+                } else if(campos.length > 0) {
                  conAPI = false;
                 }
                 if (validos) {
