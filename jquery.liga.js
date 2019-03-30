@@ -1,5 +1,5 @@
 /*
- *  Project: LIGA.js 1.3.12
+ *  Project: LIGA.js 1.3.13
  *  Description: Plugin que integra una serie de funciones y métodos para facilitar la programación de aplicaciones web.
  *  Author: Mtro. Oscar Galileo García García
  *  License: BSD-3
@@ -250,6 +250,10 @@
             $('.contAlerta').css('user-select', 'text');
             // Centramos la alerta en la ventana
             centrar(ven);
+            // Agrego una función para volver a centrarla de forma externa
+            ven.centrar = function () {
+                centrar(ven);
+            };
             // Hacemos que la ventana aparezca
             ven.slideDown(settings['vel'], function () {
                 btn.focus();
@@ -318,6 +322,9 @@
             $('.contAlerta').css('user-select', 'text');
             // Centramos la alerta en la ventana
             centrar(ven);
+            ven.centrar = function () {
+                centrar(ven);
+            };
             // Hacemos que la ventana aparezca
             ven.slideDown(settings['vel'], function () {
                 btN.focus();
@@ -443,7 +450,8 @@
                 seg : 10,
                 btn : '&nbsp;X&nbsp;',
                 conservar: true,
-                func: function () {}
+                func: function () {},
+                retur : false
             }, options);
             // Botón de cerrar
             var btn = '';
@@ -461,11 +469,12 @@
                                    .attr('title', settings['tit']).css({display:'none'})
                                    .append(btn, settings['msj']);
             // Si es body colocarlo en un DIV flotante (crearlo si no existe)
-            var $el = $(el);
+            var $el = $(typeof el != 'function' ? el : 'body');
             if($el.is('body')) {
                 var div = $('#LIGADIVFLOTANTE');
                 if (div.length == 0) {
-                 div = $('<div />').attr('id', 'LIGADIVFLOTANTE').css({width:'400px',position:'fixed','left':'50%', 'z-index':(zIndexLIGAjs++)-100});
+                 var zIndex = typeof $el.css('z-index') == 'number' ? $el.css('z-index')+100 : 99999;
+                 div = $('<div />').attr('id', 'LIGADIVFLOTANTE').css({width:'400px',position:'fixed','left':'50%', 'z-index':zIndex});
                  $('body').prepend(div.css({position:'fixed','margin-left':'-200px'}));
                 }
                 div.prepend(cont);
@@ -492,6 +501,7 @@
                     }
                 }
             });
+            return settings['retur'] ? cont : this;
         },
         AJAX : function(el, options) {
             var settings = $.extend( {
