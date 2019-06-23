@@ -393,16 +393,41 @@
                 func: function () {},
                 funClic: function () {}
             }, options);
+            var per = ('Notification' in window) ? Notification.permission : window.webkitNotifications.checkPermission();
             // Si las notificaciones no están disponibles se muestran alertas
-            if(!('Notification' in window) && !window.webkitNotifications) {
+            if((!('Notification' in window) && !window.webkitNotifications) || (per == 2 || per == 'denied')) {
+                // Llamar la atención si la ventana no está activa
+                var title = document.title;
+                if (document.visibilityState===false || document.visibilityState!='visible') {
+                    // Poner solo una vez el monitoreo del estatus de la pestaña
+                    settings['seg'] = 0;
+                    settings['retur'] = true;
+                    var tit = setInterval(function() {
+                        if (document.title == title) {
+                            document.title = '¡Notificación!';
+                        } else {
+                            document.title = title;
+                        }
+                    }, 500);
+                    if (document.onvisibilitychange==null) {
+                        document.onvisibilitychange = function () {
+                            document.title = title;
+                            if (document.visibilityState=='visible') {
+                                clearInterval(tit);
+                            }
+                            document.onvisibilitychange = null;
+                        }
+                    }
+                }
                 settings['msj'] = '<img src="'+settings['img']+'" width="35" height="35" style="float: left;" /> '+settings['msj'];
                 return $(settings['alt']).liga('mensaje', settings);
             }
-            var per = ('Notification' in window) ? Notification.permission : window.webkitNotifications.checkPermission();
+            /*
             if (per == 2 || per == 'denied') {
                 settings['msj'] = '<img src="'+settings['img']+'" width="35" height="35" style="float: left;" /> '+settings['msj'];
                 return $(settings['alt']).liga('mensaje', settings);
-            }
+            }//*/
+            var notif;
             // Solicita el permiso y lanza la primera notificación
             if(per > 0 || per == 'default') {
                 if ('Notification' in window) {
@@ -415,7 +440,6 @@
                     });
                 }
             } else {
-                var notif;
                 if ('Notification' in window) {
                     notif = new Notification(settings['tit'], {body: settings['msj'], icon: settings['img']});
                     notif.onerror = function() {
@@ -451,7 +475,7 @@
                 btn : '&nbsp;X&nbsp;',
                 conservar: true,
                 func: function () {},
-                retur : false
+                retur: false
             }, options);
             // Botón de cerrar
             var btn = '';
@@ -502,6 +526,7 @@
                 }
             });
             return settings['retur'] ? cont : this;
+            //return cont;
         },
         AJAX : function(el, options) {
             var settings = $.extend( {
